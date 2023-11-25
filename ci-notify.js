@@ -35,7 +35,7 @@ const tgmBotTkn = env.TELEGRAM_BOT_TOKEN || '6752449747:AAGU2flrF-KOT4ibqM14IJeL
 const tgmBotUrl = `https:\/\/api.telegram.org/bot${tgmBotTkn}/sendMessage`;
 (async () => {
   const gitInfo = await exec_get_stdout("git diff HEAD^1.. --stat")  //command from source code
-  const tgmMsgTxt = await `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
+  const tgmMsgTxt = `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
   ${env.GITLAB_USER_NAME} Commit: ${env.CI_COMMIT_SHORT_SHA} by ${env.CI_COMMIT_AUTHOR.replace(/\s+<\S+>/, '')}  
   ${env.CI_COMMIT_MESSAGE} ${gitInfo} CI URL: ${env.CI_PROJECT_URL}/pipelines/${env.CI_PIPELINE_ID}/`;
   try {

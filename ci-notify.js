@@ -33,16 +33,12 @@ const env = { ...envDebug, ...process.env };
 const tgmChatId = env.TELEGRAM_CHAT_ID || -4094914718;
 const tgmBotTkn = env.TELEGRAM_BOT_TOKEN || '6752449747:AAGU2flrF-KOT4ibqM14IJeL7mLw4Ph-4Cc';
 const tgmBotUrl = `https:\/\/api.telegram.org/bot${tgmBotTkn}/sendMessage`;
-
-exec_get_stdout("git diff HEAD^1.. --stat")  //command from source code
-.then((gitInfo) => {
-  const tgmMsgTxt = `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
+(async () => {
+  const gitInfo = await exec_get_stdout("git diff HEAD^1.. --stat")  //command from source code
+  const tgmMsgTxt = await `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
   ${env.GITLAB_USER_NAME} Commit: ${env.CI_COMMIT_SHORT_SHA} by ${env.CI_COMMIT_AUTHOR.replace(/\s+<\S+>/, '')}  
   ${env.CI_COMMIT_MESSAGE} ${gitInfo} CI URL: ${env.CI_PROJECT_URL}/pipelines/${env.CI_PIPELINE_ID}/`;
-  return tgmMsgTxt;
-  })
-.then((tgmMsgTxt) => {
-  (async () => {
+  await (async () => {
     try {
       const response = await fetch(tgmBotUrl, {
         method: "POST",
@@ -64,4 +60,4 @@ exec_get_stdout("git diff HEAD^1.. --stat")  //command from source code
       console.error('Got error from TelegramBot: ', error);
     }
   })();
-});
+})();

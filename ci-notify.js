@@ -1,6 +1,6 @@
 const { exec } = require('node:child_process');
 
-async function ExecGetStdout(command) {
+async function exec_get_stdout(command) {
   return new Promise((resolve, reject) => {
     exec(command, (err, stdout, stderr) => {
       if (err) {
@@ -34,7 +34,7 @@ const tgmChatId = env.TELEGRAM_CHAT_ID || -4094914718;
 const tgmBotTkn = env.TELEGRAM_BOT_TOKEN || '6752449747:AAGU2flrF-KOT4ibqM14IJeL7mLw4Ph-4Cc';
 const tgmBotUrl = `https:\/\/api.telegram.org/bot${tgmBotTkn}/sendMessage`;
 
-ExecGetStdout("git diff HEAD^1.. --stat")  //command from source code
+exec_get_stdout("git diff HEAD^1.. --stat")  //command from source code
 .then((gitInfo) => {
   const tgmMsgTxt = `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
   ${env.GITLAB_USER_NAME} Commit: ${env.CI_COMMIT_SHORT_SHA} by ${env.CI_COMMIT_AUTHOR.replace(/\s+<\S+>/, '')}  

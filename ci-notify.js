@@ -38,26 +38,24 @@ const tgmBotUrl = `https:\/\/api.telegram.org/bot${tgmBotTkn}/sendMessage`;
   const tgmMsgTxt = await `${env.CI_JOB_NAME}@${env.CI_BUILD_REF_NAME} ${env.CI_JOB_STATUS.toUpperCase()} CI started by 
   ${env.GITLAB_USER_NAME} Commit: ${env.CI_COMMIT_SHORT_SHA} by ${env.CI_COMMIT_AUTHOR.replace(/\s+<\S+>/, '')}  
   ${env.CI_COMMIT_MESSAGE} ${gitInfo} CI URL: ${env.CI_PROJECT_URL}/pipelines/${env.CI_PIPELINE_ID}/`;
-  await (async () => {
-    try {
-      const response = await fetch(tgmBotUrl, {
-        method: "POST",
-        headers: {
-          accept: 'application/json',
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          chat_id: tgmChatId,
-          text: tgmMsgTxt,
-          disable_web_page_preview: false,
-          disable_notification: false,
-          reply_to_message_id: 0
-        })
-      });
-      const result = await response.json();
-      console.log('Got the response from TelegramBot: ', JSON.stringify(result));
-    } catch (error) {
-      console.error('Got error from TelegramBot: ', error);
-    }
-  })();
+  try {
+    const response = await fetch(tgmBotUrl, {
+      method: "POST",
+      headers: {
+        accept: 'application/json',
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        chat_id: tgmChatId,
+        text: tgmMsgTxt,
+        disable_web_page_preview: false,
+        disable_notification: false,
+        reply_to_message_id: 0
+      })
+    });
+    const result = await response.json();
+    console.log('Got the response from TelegramBot: ', JSON.stringify(result));
+  } catch (error) {
+    console.error('Got error from TelegramBot: ', error);
+  }
 })();
